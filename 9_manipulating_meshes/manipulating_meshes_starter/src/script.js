@@ -39,8 +39,6 @@ cubeMesh.rotation.x = THREE.MathUtils.degToRad(45);
 
 // group.position.y = 2;
 
-// group.setS;
-
 // scene.add(group);
 
 // cubeMesh.position.y = 1;
