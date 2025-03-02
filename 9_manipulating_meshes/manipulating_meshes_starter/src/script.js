@@ -14,7 +14,17 @@ const cubeMaterial = new THREE.MeshBasicMaterial({
 const cubeMesh = new THREE.Mesh(cubeGeometry, cubeMaterial);
 
 scene.add(cubeMesh);
-cubeMesh.position.y = 1;
+
+cubeMesh.rotation.reorder("YXZ");
+
+// cubeMesh.rotation.y = THREE.MathUtils.degToRad(45);
+cubeMesh.rotation.y = THREE.MathUtils.degToRad(90);
+cubeMesh.rotation.x = THREE.MathUtils.degToRad(45);
+
+// cubeMesh.rotation.x = 5;
+// cubeMesh.rotation.z = 0;
+
+// cubeMesh.position.y = 1;
 
 // const cubeMesh2 = new THREE.Mesh(cubeGeometry, cubeMaterial);
 // cubeMesh2.position.x = 2;
@@ -53,7 +63,7 @@ const camera = new THREE.PerspectiveCamera(
   0.1,
   200
 );
-camera.position.z = 10;
+camera.position.z = 5;
 
 // console.log(cubeMesh.position.distanceTo(camera.position));
 
