@@ -15,30 +15,67 @@ const camera = new THREE.PerspectiveCamera(
 );
 camera.position.z = 5;
 
+//texture
+const planetAmbientTexture = textureLoader.load(
+  "/textures/Glass_Window/Glass_Window_003_basecolor.jpg"
+);
+planetAmbientTexture.colorSpace = THREE.SRGBColorSpace;
+
+const planetAoTextureTexture = textureLoader.load(
+  "/textures/Glass_Window/Glass_Window_003_ambientOcclusion.jpg"
+);
+const planetRoughnessTexture = textureLoader.load(
+  "/textures/Glass_Window/Glass_Window_003_roughness.jpg"
+);
+const planetMetalnessTexture = textureLoader.load(
+  "/textures/Glass_Window/Glass_Window_003_metallic.jpg"
+);
+const planetNormalTexture = textureLoader.load(
+  "/textures/Glass_Window/Glass_Window_003_normal.jpg"
+);
+const planetHeightTexture = textureLoader.load(
+  "/textures/Glass_Window/Glass_Window_003_height.png"
+);
+
+const sphereGeometry = new THREE.SphereGeometry(1, 70, 70);
+const uv2Geometry = new THREE.BufferAttribute(
+  sphereGeometry.attributes.uv.array,
+  2
+);
+sphereGeometry.setAttribute("uv2", uv2Geometry);
+
+const sphereMaterial = new THREE.MeshStandardMaterial();
+sphereMaterial.map = planetAmbientTexture;
+sphereMaterial.aoMap = planetAoTextureTexture;
+sphereMaterial.roughnessMap = planetRoughnessTexture;
+sphereMaterial.metalnessMap = planetMetalnessTexture;
+sphereMaterial.metalness = 1;
+sphereMaterial.normalMap = planetNormalTexture;
+// sphereMaterial.displacementMap = planetHeightTexture;
+// sphereMaterial.displacementScale = 0.1;
+
+const planetMesh = new THREE.Mesh(sphereGeometry, sphereMaterial);
+scene.add(planetMesh);
+
+const cylinderAmbientTexture = textureLoader.load(
+  "/textures/Incrusted_Gems_001_SD/Incrusted_Gems_001_COLOR.jpg"
+);
+
+const cylinderGeometry = new THREE.CylinderGeometry(1.25, 1.25, 0.1, 60);
+const cylinderMaterial = new THREE.MeshStandardMaterial();
+cylinderMaterial.map = cylinderAmbientTexture;
+const cylinderMesh = new THREE.Mesh(cylinderGeometry, cylinderMaterial);
+
+cylinderMesh.position.y = -1.15;
+scene.add(cylinderMesh);
+
 const controls = new OrbitControls(camera, canvas);
 controls.enableDamping = true;
 // controls.autoRotate = true;
 
-const materialTexture = textureLoader.load("/test.jpg");
-materialTexture.repeat.set(5, 5);
-materialTexture.wrapS = THREE.RepeatWrapping;
-materialTexture.wrapT = THREE.RepeatWrapping;
-
-const geometry = new THREE.SphereGeometry(1, 32, 32);
-const material = new THREE.MeshStandardMaterial({ map: materialTexture });
-
-const roundMesh = new THREE.Mesh(geometry, material);
-scene.add(roundMesh);
-
-const ambientLight = new THREE.AmbientLight(0xffffff, 1);
+// light
+const ambientLight = new THREE.AmbientLight(0xffffff, 30);
 scene.add(ambientLight);
-
-const pointLight = new THREE.PointLight(0xffffff, 20);
-pointLight.position.set(0, 0, 5);
-scene.add(pointLight);
-
-const scaneBackground = textureLoader.load("/milkyway.jpg");
-scene.background = scaneBackground;
 
 const renderer = new THREE.WebGLRenderer({
   canvas,
@@ -62,10 +99,7 @@ function renderLoop() {
   const delta = currentTime - previousTime;
   previousTime = currentTime;
 
-  roundMesh.rotation.x += THREE.MathUtils.degToRad(1) * delta * 1;
-
   controls.update();
-
   renderer.render(scene, camera);
   window.requestAnimationFrame(renderLoop);
 }
