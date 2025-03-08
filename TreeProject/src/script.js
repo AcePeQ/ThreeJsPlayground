@@ -112,11 +112,11 @@ const trees = [
   },
 
   {
-    position_x: 10,
+    position_x: 12,
     position_y: 0,
-    position_z: 0,
+    position_z: -10,
     rotate_x: 0,
-    rotate_y: 15,
+    rotate_y: -90,
     rotate_z: 0,
     treeBush: [
       {
@@ -185,7 +185,7 @@ const trees = [
     position_y: 0,
     position_z: 10,
     rotate_x: 0,
-    rotate_y: 15,
+    rotate_y: 180,
     rotate_z: 0,
     treeBush: [
       {
