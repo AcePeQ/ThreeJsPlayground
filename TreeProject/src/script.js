@@ -40,7 +40,7 @@ scene.add(camera);
 
 const controls = new OrbitControls(camera, canvas);
 controls.enableDamping = true;
-controls.dampingFactor = 0.01;
+controls.dampingFactor = 0.02;
 // controls.autoRotate = true;
 
 /*-----------------------------------*/
@@ -96,7 +96,9 @@ function createTree(tree) {
 
 function createTreeLeg(treeLeg) {
   const treeLegGeo = new THREE.BoxGeometry(1.5, treeLeg.width, 1.5);
-  const treeLegMat = new THREE.MeshStandardMaterial({ color: 0x654321 });
+  const treeLegMat = new THREE.MeshStandardMaterial({
+    color: 0x654321,
+  });
   const treeLegMesh = new THREE.Mesh(treeLegGeo, treeLegMat);
   treeLegMesh.rotation.x = THREE.MathUtils.degToRad(90);
   treeLegMesh.position.set(
@@ -141,7 +143,9 @@ function createBush(bush) {
     bush.height,
     bush.depth
   );
-  const treeBushMat = new THREE.MeshStandardMaterial({ color: 0x228b22 });
+  const treeBushMat = new THREE.MeshStandardMaterial({
+    color: 0x228b22,
+  });
   const treeBushMesh = new THREE.Mesh(treeBushGeo, treeBushMat);
   treeBushMesh.position.set(bush.position_x, bush.position_y, bush.position_z);
 
@@ -163,8 +167,61 @@ treesGroup.traverse((obj) => {
 });
 
 scene.add(treesGroup);
-
 /*-----------------------------------*/
+
+/*------------WALL--------------------*/
+const wallGroupOne = new THREE.Group();
+wallGroupOne.position.x = 14;
+wallGroupOne.position.z = 14.5;
+wallGroupOne.position.y = 0.5;
+wallGroupOne.rotation.y = THREE.MathUtils.degToRad(90);
+
+const wallGroupTwo = new THREE.Group();
+wallGroupTwo.position.x = 12.5;
+wallGroupTwo.position.z = 14;
+wallGroupTwo.position.y = 0.5;
+wallGroupTwo.rotation.y = THREE.MathUtils.degToRad(180);
+
+function createWall() {
+  const brickMeshes = [];
+  let brickPositionX = 0;
+  let brickPositionY = 0;
+
+  for (let row = 0; row < 6; row++) {
+    for (let col = 0; col < 6; col++) {
+      const brickGeo = new THREE.BoxGeometry(1, 1, 2);
+      const brickMat = new THREE.MeshStandardMaterial({ color: 0xa9a9a9 });
+      const brickMesh = new THREE.Mesh(brickGeo, brickMat);
+      brickMesh.position.x = brickPositionX;
+      brickMesh.position.y = brickPositionY;
+      brickMeshes.push(brickMesh);
+      brickPositionX += 1;
+    }
+    brickPositionY += 1;
+    brickPositionX = 0;
+  }
+
+  return brickMeshes;
+}
+
+const wallOne = createWall();
+const wallTwo = createWall();
+wallOne.forEach((brick) => {
+  brick.castShadow = true;
+  brick.receiveShadow = true;
+  wallGroupOne.add(brick);
+});
+
+wallTwo.forEach((brick) => {
+  brick.castShadow = true;
+  brick.receiveShadow = true;
+  wallGroupTwo.add(brick);
+});
+
+scene.add(wallGroupOne);
+scene.add(wallGroupTwo);
+
+/*------------WALL--------------------*/
 
 const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
 const directionalLight = new THREE.DirectionalLight(0xffffff, 2);
