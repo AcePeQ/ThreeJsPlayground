@@ -1,7 +1,11 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { treesObject } from "./trees";
 
 const canvas = document.querySelector(".canvas");
+
+const cubeLoader = new THREE.CubeTextureLoader();
+cubeLoader.setPath("./skyCubeTexture/");
 
 const axesHelper = new THREE.AxesHelper();
 
@@ -9,8 +13,18 @@ let width = window.innerWidth;
 let height = window.innerHeight;
 let aspectRatio = width / height;
 
+const backgroundCubemap = cubeLoader.load([
+  "px.png",
+  "nx.png",
+  "py.png",
+  "ny.png",
+  "pz.png",
+  "nz.png",
+]);
+
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x87ceeb);
+// scene.background = backgroundCubemap;
 
 const camera = new THREE.OrthographicCamera(
   -25 * aspectRatio,
@@ -31,228 +45,33 @@ controls.dampingFactor = 0.01;
 
 /*-----------------------------------*/
 
-const groundGeo = new THREE.BoxGeometry(30, 5, 30);
-const groundMat = new THREE.MeshBasicMaterial({
-  color: 0x3aaf4f,
+const grassGeo = new THREE.BoxGeometry(30, 5, 30);
+const grassMat = new THREE.MeshStandardMaterial({
+  color: 0x3a9236,
+});
+const grassMesh = new THREE.Mesh(grassGeo, grassMat);
+grassMesh.position.y = -2.5;
+
+const groundGeo = new THREE.BoxGeometry(28, 3.5, 28);
+const groundMat = new THREE.MeshStandardMaterial({
+  color: 0x5c4033,
 });
 const groundMesh = new THREE.Mesh(groundGeo, groundMat);
-groundMesh.position.y = -2.5;
-scene.add(groundMesh);
+
+groundMesh.position.y = -4;
+grassMesh.add(groundMesh);
+
+grassMesh.receiveShadow = true;
+groundMesh.receiveShadow = true;
+
+scene.add(grassMesh);
 
 const treesGroup = new THREE.Group();
-
-const trees = [
-  {
-    position_x: -10,
-    position_y: 0,
-    position_z: -10,
-    rotate_x: 0,
-    rotate_y: 90,
-    rotate_z: 0,
-    treeBush: [
-      {
-        width: 10,
-        height: 6,
-        depth: 10,
-        position_x: 0,
-        position_y: 8,
-        position_z: 0,
-      },
-    ],
-    treeLegs: [
-      {
-        width: 6,
-        position_x: 0,
-        position_y: 0,
-        position_z: -3.75,
-        treeLegCrowns: [
-          {
-            width: 2,
-            position_x: 0,
-            position_y: -2.25,
-            position_z: -1.75,
-            treeLegBush: [
-              {
-                width: 6,
-                height: 4,
-                depth: 6,
-                position_x: 0,
-                position_y: -2,
-                position_z: 0,
-              },
-            ],
-          },
-        ],
-      },
-      {
-        width: 4.5,
-        position_x: 0,
-        position_y: -2,
-        position_z: 3,
-        treeLegCrowns: [
-          {
-            width: 1,
-            position_x: 0,
-            position_y: 1.5,
-            position_z: -1.25,
-            treeLegBush: [
-              {
-                width: 6,
-                height: 4,
-                depth: 6,
-                position_x: 0,
-                position_y: -2,
-                position_z: 0,
-              },
-            ],
-          },
-        ],
-      },
-    ],
-  },
-
-  {
-    position_x: 12,
-    position_y: 0,
-    position_z: -10,
-    rotate_x: 0,
-    rotate_y: -90,
-    rotate_z: 0,
-    treeBush: [
-      {
-        width: 10,
-        height: 6,
-        depth: 10,
-        position_x: 0,
-        position_y: 8,
-        position_z: 0,
-      },
-    ],
-    treeLegs: [
-      {
-        width: 6,
-        position_x: 0,
-        position_y: 0,
-        position_z: -3.75,
-        treeLegCrowns: [
-          {
-            width: 2,
-            position_x: 0,
-            position_y: -2.25,
-            position_z: -1.75,
-            treeLegBush: [
-              {
-                width: 6,
-                height: 4,
-                depth: 6,
-                position_x: 0,
-                position_y: -2,
-                position_z: 0,
-              },
-            ],
-          },
-        ],
-      },
-      {
-        width: 4.5,
-        position_x: 0,
-        position_y: -2,
-        position_z: 3,
-        treeLegCrowns: [
-          {
-            width: 1,
-            position_x: 0,
-            position_y: 1.5,
-            position_z: -1.25,
-            treeLegBush: [
-              {
-                width: 6,
-                height: 4,
-                depth: 6,
-                position_x: 0,
-                position_y: -2,
-                position_z: 0,
-              },
-            ],
-          },
-        ],
-      },
-    ],
-  },
-
-  {
-    position_x: -10,
-    position_y: 0,
-    position_z: 10,
-    rotate_x: 0,
-    rotate_y: 180,
-    rotate_z: 0,
-    treeBush: [
-      {
-        width: 10,
-        height: 6,
-        depth: 10,
-        position_x: 0,
-        position_y: 8,
-        position_z: 0,
-      },
-    ],
-    treeLegs: [
-      {
-        width: 6,
-        position_x: 0,
-        position_y: 0,
-        position_z: -3.75,
-        treeLegCrowns: [
-          {
-            width: 2,
-            position_x: 0,
-            position_y: -2.25,
-            position_z: -1.75,
-            treeLegBush: [
-              {
-                width: 6,
-                height: 4,
-                depth: 6,
-                position_x: 0,
-                position_y: -2,
-                position_z: 0,
-              },
-            ],
-          },
-        ],
-      },
-      {
-        width: 4.5,
-        position_x: 0,
-        position_y: -2,
-        position_z: 3,
-        treeLegCrowns: [
-          {
-            width: 1,
-            position_x: 0,
-            position_y: 1.5,
-            position_z: -1.25,
-            treeLegBush: [
-              {
-                width: 6,
-                height: 4,
-                depth: 6,
-                position_x: 0,
-                position_y: -2,
-                position_z: 0,
-              },
-            ],
-          },
-        ],
-      },
-    ],
-  },
-];
+const trees = treesObject;
 
 function createTree(tree) {
   const treeLogGeo = new THREE.BoxGeometry(1.5, 12, 1.5);
-  const treeLogMat = new THREE.MeshBasicMaterial({ color: 0x8b5a2b });
+  const treeLogMat = new THREE.MeshStandardMaterial({ color: 0x654321 });
   const treeLogMesh = new THREE.Mesh(treeLogGeo, treeLogMat);
 
   tree.treeLegs.forEach((treeLegArg) => {
@@ -277,7 +96,7 @@ function createTree(tree) {
 
 function createTreeLeg(treeLeg) {
   const treeLegGeo = new THREE.BoxGeometry(1.5, treeLeg.width, 1.5);
-  const treeLegMat = new THREE.MeshBasicMaterial({ color: 0x8b5a2b });
+  const treeLegMat = new THREE.MeshStandardMaterial({ color: 0x654321 });
   const treeLegMesh = new THREE.Mesh(treeLegGeo, treeLegMat);
   treeLegMesh.rotation.x = THREE.MathUtils.degToRad(90);
   treeLegMesh.position.set(
@@ -296,7 +115,7 @@ function createTreeLeg(treeLeg) {
 
 function createLegCrown(crown) {
   const treeLegCrownGeo = new THREE.BoxGeometry(1.5, crown.width, 1.5);
-  const treeLegCrownMat = new THREE.MeshBasicMaterial({ color: 0x8b5a2b });
+  const treeLegCrownMat = new THREE.MeshStandardMaterial({ color: 0x654321 });
   const treeLegCrownMesh = new THREE.Mesh(treeLegCrownGeo, treeLegCrownMat);
   treeLegCrownMesh.rotation.x = THREE.MathUtils.degToRad(90);
 
@@ -305,8 +124,6 @@ function createLegCrown(crown) {
     crown.position_y,
     crown.position_z
   );
-
-  console.log(crown.treeLegBush);
 
   if (crown.treeLegBush) {
     crown.treeLegBush.forEach((bush) => {
@@ -324,7 +141,7 @@ function createBush(bush) {
     bush.height,
     bush.depth
   );
-  const treeBushMat = new THREE.MeshBasicMaterial({ color: 0x228b22 });
+  const treeBushMat = new THREE.MeshStandardMaterial({ color: 0x228b22 });
   const treeBushMesh = new THREE.Mesh(treeBushGeo, treeBushMat);
   treeBushMesh.position.set(bush.position_x, bush.position_y, bush.position_z);
 
@@ -337,13 +154,40 @@ trees.forEach((treeArg) => {
 });
 
 treesGroup.position.y = 6;
+treesGroup.castShadow = true;
+treesGroup.traverse((obj) => {
+  if (obj.isMesh) {
+    obj.castShadow = true;
+    obj.receiveShadow = true;
+  }
+});
+
 scene.add(treesGroup);
 
-// groundMesh.add(treesGroup);
 /*-----------------------------------*/
+
+const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+const directionalLight = new THREE.DirectionalLight(0xffffff, 2);
+directionalLight.position.set(50, 100, 50);
+
+directionalLight.shadow.mapSize.width = 2048; // Większa rozdzielczość cienia
+directionalLight.shadow.mapSize.height = 2048;
+directionalLight.shadow.camera.near = 1;
+directionalLight.shadow.camera.far = 300;
+directionalLight.shadow.camera.left = -50;
+directionalLight.shadow.camera.right = 50;
+directionalLight.shadow.camera.top = 50;
+directionalLight.shadow.camera.bottom = -50;
+
+directionalLight.castShadow = true;
 
 const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
 renderer.setSize(width, height);
+
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+scene.add(ambientLight, directionalLight);
 
 window.addEventListener("resize", function () {
   width = window.innerWidth;
