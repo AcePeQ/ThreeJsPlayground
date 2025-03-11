@@ -171,14 +171,14 @@ scene.add(treesGroup);
 
 /*------------WALL--------------------*/
 const wallGroupOne = new THREE.Group();
-wallGroupOne.position.x = 14;
-wallGroupOne.position.z = 14.5;
+wallGroupOne.position.x = 14.5;
+wallGroupOne.position.z = 14;
 wallGroupOne.position.y = 0.5;
 wallGroupOne.rotation.y = THREE.MathUtils.degToRad(90);
 
 const wallGroupTwo = new THREE.Group();
-wallGroupTwo.position.x = 12.5;
-wallGroupTwo.position.z = 14;
+wallGroupTwo.position.x = 14;
+wallGroupTwo.position.z = 14.5;
 wallGroupTwo.position.y = 0.5;
 wallGroupTwo.rotation.y = THREE.MathUtils.degToRad(180);
 
@@ -186,10 +186,12 @@ function createWall() {
   const brickMeshes = [];
   let brickPositionX = 0;
   let brickPositionY = 0;
+  let bricksPerRow = 6;
 
   for (let row = 0; row < 6; row++) {
-    for (let col = 0; col < 6; col++) {
-      const brickGeo = new THREE.BoxGeometry(1, 1, 2);
+    let col = bricksPerRow - row;
+    for (; col > 0; col--) {
+      const brickGeo = new THREE.BoxGeometry(2, 1, 1);
       const brickMat = new THREE.MeshStandardMaterial({ color: 0xa9a9a9 });
       const brickMesh = new THREE.Mesh(brickGeo, brickMat);
       brickMesh.position.x = brickPositionX;
