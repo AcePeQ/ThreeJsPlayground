@@ -46,19 +46,22 @@ controls.enableDamping = true;
 controls.dampingFactor = 0.02;
 // controls.autoRotate = true;
 
-gltfLodaer.load("./models/abandonedhouse/abandoned_house.glb", (gltf) => {
-  const model = gltf.scene;
-  model.position.set(4, 0, 2);
-  model.rotation.y = THREE.MathUtils.degToRad(-90);
-  model.traverse((node) => {
-    if (node.isMesh) {
-      node.castShadow = true; // Rzuca cień
-      node.receiveShadow = true; // Odbiera cień
-    }
-  });
-  model.scale.setScalar(1.5);
-  scene.add(model);
-});
+gltfLodaer.load(
+  "./models/rlshouse/rts_elf_house_lv2_-_proto_series.glb",
+  (gltf) => {
+    const model = gltf.scene;
+    model.position.set(0, 0, 2);
+    model.rotation.y = THREE.MathUtils.degToRad(-90);
+    model.traverse((node) => {
+      if (node.isMesh) {
+        node.castShadow = true; // Rzuca cień
+        node.receiveShadow = true; // Odbiera cień
+      }
+    });
+    model.scale.setScalar(1.5);
+    scene.add(model);
+  }
+);
 
 /*-----------------------------------*/
 
@@ -203,9 +206,9 @@ function createWall() {
   const brickMeshes = [];
   let brickPositionX = 0;
   let brickPositionY = 0;
-  let bricksPerRow = 6;
+  let bricksPerRow = 7;
 
-  for (let row = 0; row < 6; row++) {
+  for (let row = 0; row < 7; row++) {
     let col = bricksPerRow - row;
     for (; col > 0; col--) {
       const brickGeo = new THREE.BoxGeometry(2, 1, 1);
