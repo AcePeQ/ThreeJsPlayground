@@ -1,11 +1,14 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { treesObject } from "./trees";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 
 const canvas = document.querySelector(".canvas");
 
 const cubeLoader = new THREE.CubeTextureLoader();
 cubeLoader.setPath("./skyCubeTexture/");
+
+const gltfLodaer = new GLTFLoader();
 
 const axesHelper = new THREE.AxesHelper();
 
@@ -42,6 +45,20 @@ const controls = new OrbitControls(camera, canvas);
 controls.enableDamping = true;
 controls.dampingFactor = 0.02;
 // controls.autoRotate = true;
+
+gltfLodaer.load("./models/abandonedhouse/abandoned_house.glb", (gltf) => {
+  const model = gltf.scene;
+  model.position.set(4, 0, 2);
+  model.rotation.y = THREE.MathUtils.degToRad(-90);
+  model.traverse((node) => {
+    if (node.isMesh) {
+      node.castShadow = true; // Rzuca cień
+      node.receiveShadow = true; // Odbiera cień
+    }
+  });
+  model.scale.setScalar(1.5);
+  scene.add(model);
+});
 
 /*-----------------------------------*/
 
