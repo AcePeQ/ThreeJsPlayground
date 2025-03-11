@@ -22,7 +22,7 @@ const camera = new THREE.OrthographicCamera(
   0.1,
   2000
 );
-camera.position.set(-50, 50, 100);
+camera.position.set(50, 50, 100);
 
 scene.add(camera);
 
@@ -36,6 +36,7 @@ gltfLodaer.load(
   (gltf) => {
     const model = gltf.scene;
     model.position.set(0, 0, 2);
+    model.scale.setScalar(1.5);
     model.rotation.y = THREE.MathUtils.degToRad(-90);
     model.traverse((node) => {
       if (node.isMesh) {
@@ -43,7 +44,7 @@ gltfLodaer.load(
         node.receiveShadow = true;
       }
     });
-    model.scale.setScalar(1.5);
+
     scene.add(model);
   }
 );
@@ -234,8 +235,8 @@ const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
 const directionalLight = new THREE.DirectionalLight(0xffffff, 2);
 directionalLight.position.set(50, 100, 50);
 
-directionalLight.shadow.mapSize.width = 2048;
-directionalLight.shadow.mapSize.height = 2048;
+directionalLight.shadow.mapSize.width = width;
+directionalLight.shadow.mapSize.height = height;
 directionalLight.shadow.camera.near = 0.1;
 directionalLight.shadow.camera.far = 500;
 directionalLight.shadow.camera.left = -25;
