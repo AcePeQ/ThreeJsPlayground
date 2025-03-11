@@ -5,29 +5,14 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 
 const canvas = document.querySelector(".canvas");
 
-const cubeLoader = new THREE.CubeTextureLoader();
-cubeLoader.setPath("./skyCubeTexture/");
-
 const gltfLodaer = new GLTFLoader();
-
-const axesHelper = new THREE.AxesHelper();
 
 let width = window.innerWidth;
 let height = window.innerHeight;
 let aspectRatio = width / height;
 
-const backgroundCubemap = cubeLoader.load([
-  "px.png",
-  "nx.png",
-  "py.png",
-  "ny.png",
-  "pz.png",
-  "nz.png",
-]);
-
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x87ceeb);
-// scene.background = backgroundCubemap;
 
 const camera = new THREE.OrthographicCamera(
   -25 * aspectRatio,
@@ -44,7 +29,7 @@ scene.add(camera);
 const controls = new OrbitControls(camera, canvas);
 controls.enableDamping = true;
 controls.dampingFactor = 0.02;
-// controls.autoRotate = true;
+controls.autoRotate = true;
 
 gltfLodaer.load(
   "./models/rlshouse/rts_elf_house_lv2_-_proto_series.glb",
@@ -54,8 +39,8 @@ gltfLodaer.load(
     model.rotation.y = THREE.MathUtils.degToRad(-90);
     model.traverse((node) => {
       if (node.isMesh) {
-        node.castShadow = true; // Rzuca cień
-        node.receiveShadow = true; // Odbiera cień
+        node.castShadow = true;
+        node.receiveShadow = true;
       }
     });
     model.scale.setScalar(1.5);
