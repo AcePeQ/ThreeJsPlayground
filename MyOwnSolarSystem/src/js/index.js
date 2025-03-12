@@ -14,7 +14,8 @@ const scene = new THREE.Scene();
 
 // camera
 const camera = new THREE.PerspectiveCamera(35, ratioAspect, 0.1, 1000);
-camera.position.z = 200;
+camera.position.z = 300;
+camera.position.y = 100;
 scene.add(camera);
 
 // controls
@@ -134,35 +135,35 @@ const planets = [
   {
     name: "Jupiter",
     speed: 0.0013,
-    distance: 35,
+    distance: 50,
     radius: 3,
     material: jupiterMaterial,
     moons: [
       {
         name: "Io",
         speed: 0.007,
-        distance: 8,
+        distance: 7,
         radius: 0.5,
         material: moonMaterial,
       },
       {
         name: "Europa",
         speed: 0.006,
-        distance: 2,
+        distance: 1.5,
         radius: 0.4,
         material: moonMaterial,
       },
       {
         name: "Ganymede",
         speed: 0.005,
-        distance: 4,
+        distance: 3.5,
         radius: 0.7,
         material: moonMaterial,
       },
       {
         name: "Callisto",
         speed: 0.004,
-        distance: 6,
+        distance: 5,
         radius: 0.6,
         material: moonMaterial,
       },
@@ -171,7 +172,7 @@ const planets = [
   {
     name: "Saturn",
     speed: 0.0009,
-    distance: 70,
+    distance: 80,
     radius: 2,
     material: saturnMaterial,
     moons: [
@@ -194,7 +195,7 @@ const planets = [
   {
     name: "Uranus",
     speed: 0.0007,
-    distance: 90,
+    distance: 120,
     radius: 1,
     material: uranusMaterial,
     moons: [
@@ -217,7 +218,7 @@ const planets = [
   {
     name: "Neptune",
     speed: 0.0005,
-    distance: 110,
+    distance: 150,
     radius: 0.8,
     material: neptuneMaterial,
     moons: [
@@ -292,6 +293,11 @@ function renderLoop() {
 
     planet.children.forEach((moon, moonIndex) => {
       moon.rotation.y += planets[i].moons[moonIndex].speed;
+
+      moon.position.x =
+        Math.sin(moon.rotation.y) * planets[i].moons[moonIndex].distance;
+      moon.position.z =
+        Math.cos(moon.rotation.y) * planets[i].moons[moonIndex].distance;
     });
 
     scene.add(planet);
