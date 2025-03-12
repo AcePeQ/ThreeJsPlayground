@@ -55,6 +55,17 @@ const uranusTexture = textureLoader.load("../../public/textures/2k_uranus.jpg");
 const cubeTextureLoader = new THREE.CubeTextureLoader();
 cubeTextureLoader.setPath("../../public/cubeMaps/");
 
+const sceneBackground = cubeTextureLoader.load([
+  "px.png",
+  "nx.png",
+  "py.png",
+  "ny.png",
+  "pz.png",
+  "nz.png",
+]);
+
+scene.background = sceneBackground;
+
 // generic geometry
 const icosahedronGeometry = new THREE.IcosahedronGeometry(1, 5);
 
