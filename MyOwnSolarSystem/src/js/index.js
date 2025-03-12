@@ -23,6 +23,13 @@ controls.enableDamping = true;
 controls.dampingFactor = 0.02;
 // controls.autoRotate = true;
 
+// textures
+const textureLoader = new THREE.TextureLoader();
+
+// cubeTextures
+const cubeTextureLoader = new THREE.CubeTextureLoader();
+cubeTextureLoader.setPath("../../public/cubeMaps/");
+
 // test mesh
 const geo = new THREE.BoxGeometry(1, 1, 1);
 const mat = new THREE.MeshBasicMaterial({ color: "red" });
