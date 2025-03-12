@@ -13,8 +13,8 @@ let ratioAspect = width / height;
 const scene = new THREE.Scene();
 
 // camera
-const camera = new THREE.PerspectiveCamera(35, ratioAspect, 0.1, 500);
-camera.position.z = 150;
+const camera = new THREE.PerspectiveCamera(35, ratioAspect, 0.1, 1000);
+camera.position.z = 200;
 scene.add(camera);
 
 // controls
@@ -111,7 +111,7 @@ const planets = [
   {
     name: "Mars",
     speed: 0.0024,
-    distance: 30,
+    distance: 25,
     radius: 0.53,
     material: marsMaterial,
     moons: [
@@ -134,35 +134,35 @@ const planets = [
   {
     name: "Jupiter",
     speed: 0.0013,
-    distance: 50,
-    radius: 11.2,
+    distance: 35,
+    radius: 3,
     material: jupiterMaterial,
     moons: [
       {
         name: "Io",
         speed: 0.007,
-        distance: 4,
+        distance: 8,
         radius: 0.5,
         material: moonMaterial,
       },
       {
         name: "Europa",
         speed: 0.006,
-        distance: 6,
+        distance: 2,
         radius: 0.4,
         material: moonMaterial,
       },
       {
         name: "Ganymede",
         speed: 0.005,
-        distance: 8,
+        distance: 4,
         radius: 0.7,
         material: moonMaterial,
       },
       {
         name: "Callisto",
         speed: 0.004,
-        distance: 10,
+        distance: 6,
         radius: 0.6,
         material: moonMaterial,
       },
@@ -172,20 +172,20 @@ const planets = [
     name: "Saturn",
     speed: 0.0009,
     distance: 70,
-    radius: 9.45,
+    radius: 2,
     material: saturnMaterial,
     moons: [
       {
         name: "Titan",
         speed: 0.0045,
-        distance: 8,
+        distance: 4,
         radius: 0.8,
         material: moonMaterial,
       },
       {
         name: "Enceladus",
         speed: 0.006,
-        distance: 4,
+        distance: 2,
         radius: 0.3,
         material: moonMaterial,
       },
@@ -195,7 +195,7 @@ const planets = [
     name: "Uranus",
     speed: 0.0007,
     distance: 90,
-    radius: 4,
+    radius: 1,
     material: uranusMaterial,
     moons: [
       {
@@ -218,13 +218,13 @@ const planets = [
     name: "Neptune",
     speed: 0.0005,
     distance: 110,
-    radius: 3.88,
+    radius: 0.8,
     material: neptuneMaterial,
     moons: [
       {
         name: "Triton",
         speed: 0.0035,
-        distance: 5,
+        distance: 3,
         radius: 0.7,
         material: moonMaterial,
       },
@@ -261,7 +261,7 @@ const planetMeshes = planets.map((planet) => {
 console.log(planetMeshes);
 
 // light
-const ambientLight = new THREE.AmbientLight(0xffffff, 5);
+const ambientLight = new THREE.AmbientLight(0xffffff, 2);
 scene.add(ambientLight);
 
 // renderer
@@ -284,7 +284,16 @@ window.addEventListener("resize", function () {
 function renderLoop() {
   requestAnimationFrame(renderLoop);
 
-  planetMeshes.forEach((planet) => {
+  planetMeshes.forEach((planet, i) => {
+    planet.rotation.y += planets[i].speed;
+
+    planet.position.x = Math.sin(planet.rotation.y) * planets[i].distance;
+    planet.position.z = Math.cos(planet.rotation.y) * planets[i].distance;
+
+    planet.children.forEach((moon, moonIndex) => {
+      moon.rotation.y += planets[i].moons[moonIndex].speed;
+    });
+
     scene.add(planet);
   });
 
