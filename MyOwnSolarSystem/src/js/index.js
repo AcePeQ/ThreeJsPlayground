@@ -273,8 +273,12 @@ const planetMeshes = planets.map((planet) => {
 console.log(planetMeshes);
 
 // light
-const ambientLight = new THREE.AmbientLight(0xffffff, 2);
+const ambientLight = new THREE.AmbientLight(0xffffff, 0.05);
 scene.add(ambientLight);
+
+const directionalLight = new THREE.DirectionalLight(0xffffff, 1.25);
+directionalLight.position.set(0, 100, 300);
+scene.add(directionalLight);
 
 // renderer
 const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
